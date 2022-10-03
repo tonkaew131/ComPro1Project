@@ -1,8 +1,8 @@
 from tkinter import *
 
 
-def drawSquareButton(text='', row=0, rowspan=1, column=0, columnspan=1, size=100):
-    frame = Frame(root, width=size, height=size)
+def drawButton(text='', row=0, rowspan=1, column=0, columnspan=1, width=100, height=100):
+    frame = Frame(root, width=width, height=height)
     button = Button(frame, text=text)
 
     frame.grid_propagate(False)         # Disables resizing of frame
@@ -15,8 +15,8 @@ def drawSquareButton(text='', row=0, rowspan=1, column=0, columnspan=1, size=100
     button.grid(sticky='wens')
 
 
-def drawSquareEntry(textvariable, row=0, rowspan=1, column=0, columnspan=1, size=100):
-    frame = Frame(root, width=size, height=size)
+def drawSquareEntry(textvariable, row=0, rowspan=1, column=0, columnspan=1, width=100, height=100):
+    frame = Frame(root, width=width, height=height)
     entry = Entry(frame, textvariable=textvariable, justify='center')
 
     frame.grid_propagate(False)         # Disables resizing of frame
@@ -38,15 +38,24 @@ def initKeyboardGUI():
     offset = [0, 1, 3]
     startRow, startColumn = 17, 1
 
+    # Draw Keyboard Key
     for inxRow, row in enumerate(keyboardLayout):
         placeRow = startRow + (2 * inxRow)
         for inxCol, text in enumerate(list(row)):
             placeColumn = startColumn + (2 * inxCol) + offset[inxRow]
 
-            drawSquareButton(text, size=40,
-                row=placeRow, rowspan=2,
-                column=placeColumn, columnspan=2
-            )
+            drawButton(text, width=40, height=40,
+                       row=placeRow, rowspan=2,
+                       column=placeColumn, columnspan=2
+                       )
+
+    # Enter Button
+    drawButton('Enter', row=21, rowspan=2, column=1,
+               columnspan=3, width=40 / 2 * 3, height=40)
+
+    # Return Button
+    drawButton('<=', row=21, rowspan=2, column=18,
+               columnspan=3, width=40 / 2 * 3, height=40)
 
 
 def initDisplay():
@@ -59,10 +68,10 @@ def initDisplay():
         for inxCol in range(5):
             placeColumn = startColumn + (2 * inxCol)
 
-            drawSquareEntry(str,  size=40,
-                row=placeRow, rowspan=2,
-                column=placeColumn, columnspan=2
-            )
+            drawSquareEntry(str,  width=40, height=40,
+                            row=placeRow, rowspan=2,
+                            column=placeColumn, columnspan=2
+                            )
 
 
 if __name__ == '__main__':
