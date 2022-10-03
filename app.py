@@ -45,9 +45,9 @@ def initKeyboardGUI():
             placeColumn = startColumn + (2 * inxCol) + offset[inxRow]
 
             drawButton(text, width=40, height=40,
-                       row=placeRow, rowspan=2,
-                       column=placeColumn, columnspan=2
-                       )
+                row=placeRow, rowspan=2,
+                column=placeColumn, columnspan=2
+            )
 
     # Enter Button
     drawButton('Enter', row=21, rowspan=2, column=1,
@@ -69,9 +69,9 @@ def initDisplay():
             placeColumn = startColumn + (2 * inxCol)
 
             drawSquareEntry(str,  width=40, height=40,
-                            row=placeRow, rowspan=2,
-                            column=placeColumn, columnspan=2
-                            )
+                row=placeRow, rowspan=2,
+                column=placeColumn, columnspan=2
+            )
 
 
 if __name__ == '__main__':
@@ -84,7 +84,13 @@ if __name__ == '__main__':
     # Draw Title
     Label(root, text='Wordle').grid(row=1, column=1, rowspan=2, columnspan=20)
 
+    # Draw Components
     initKeyboardGUI()
     initDisplay()
+
+    # Load Words List
+    f = open('words', 'r')
+    wordsList = f.read().split('\n')
+    print(f'Loaded {len(wordsList)} words')
 
     root.mainloop()
