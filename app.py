@@ -90,13 +90,16 @@ def initDisplay():
                                     row=placeRow, rowspan=2,
                                     column=placeColumn, columnspan=2
                                     )
-            # entry['state'] = DISABLED
+            entry['state'] = DISABLED
+            entry['disabledbackground'] = 'white'
+            entry['disabledforeground'] = 'white'
             entryRow.append(entry)
         textVariableList.append(textVariableRow)
         entryList.append(entryRow)
 
     # Answer Box
-    Label(root, text='Answer: ').grid(row=17, column=6, columnspan=4, pady=15)
+    Label(root, text='Answer: ').grid(
+        row=17, column=6, columnspan=4, pady=15)
 
     global answerVariable
     answerVariable = StringVar()
@@ -178,8 +181,9 @@ def checkWord(event=None):
             print('⬛', end='')
 
         textVariableList[currRow][idx].set(currWordState[idx]['char'].upper())
-        entryList[currRow][idx].config(
-            {'background': currWordState[idx]['color']})
+        # entryList[currRow][idx]['background'] = currWordState[idx]['color']
+        entryList[currRow][idx]['disabledbackground'] = currWordState[idx]['color']
+        entryList[currRow][idx]['state'] = DISABLED
     print('')
 
     answerVariable.set('')
@@ -206,7 +210,7 @@ if __name__ == '__main__':
     root.columnconfigure(tuple(range(22)), weight=1, minsize=1)
 
     # Draw Title
-    Label(root, text='Wordle').grid(row=1, column=1, rowspan=2, columnspan=20)
+    Label(root, text='Wordle', font='Helvetica 24 bold').grid(row=1, column=1, rowspan=2, columnspan=20)
 
     # Draw Components
     initKeyboardGUI()
