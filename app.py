@@ -3,9 +3,9 @@ from tkinter import messagebox
 
 import random
 
-
 # Global Game Variable
 entryList = []          # Store all Entry
+buttonList = {}         # Store all Keyboard's Button
 textVariableList = []   # Store all Entry's TextVariable
 wordsList = []          # Wordle's words list
 answerVariable = None   # Answer Entry box's TextVariable
@@ -13,9 +13,12 @@ targetWord = ''         # Current Game's target word
 currRow = 0             # Current Game's playing row
 
 
-def drawButton(text='', row=0, rowspan=1, column=0, columnspan=1, width=100, height=100, command=None):
+def drawButton(text='', row=0, rowspan=1, column=0, columnspan=1, width=100, height=100, command=None, keyboard=False):
     frame = Frame(root, width=width, height=height)
     button = Button(frame, text=text, command=command)
+    if(keyboard):
+        button = Button(frame, text=text,
+                        command=lambda: onKeyboardClick(text))
 
     frame.grid_propagate(False)         # Disables resizing of frame
     frame.columnconfigure(0, weight=1)  # Enables button to fill frame
@@ -58,10 +61,11 @@ def initKeyboardGUI():
         for inxCol, text in enumerate(list(row)):
             placeColumn = startColumn + (2 * inxCol) + offset[inxRow]
 
-            drawButton(text, width=40, height=40,
-                       row=placeRow, rowspan=2,
-                       column=placeColumn, columnspan=2
-                       )
+            btn = drawButton(text, width=40, height=40,
+                             row=placeRow, rowspan=2,
+                             column=placeColumn, columnspan=2, keyboard=True
+                             )
+            buttonList[text.lower()] = btn
 
     # Enter Button
     drawButton('Enter', row=23, rowspan=2, column=1,
@@ -108,6 +112,12 @@ def initDisplay():
     entryAnswer.grid(row=17, column=10, columnspan=6, pady=15)
     entryAnswer.bind('<Return>', checkWord)
     entryAnswer.focus()
+
+
+def onKeyboardClick(key):
+    currWord = answerVariable.get()
+    currWord += key.lower()
+    answerVariable.set(currWord)
 
 
 def checkWord(event=None):
@@ -172,7 +182,7 @@ def checkWord(event=None):
 
     global currRow
     # Set Color, and Char
-    for idx, char in enumerate(currWordState):
+    for idx in currWordState:
         if(currWordState[idx]['color'] == 'green'):
             print('🟩', end='')
         elif(currWordState[idx]['color'] == 'yellow'):
@@ -184,6 +194,10 @@ def checkWord(event=None):
         # entryList[currRow][idx]['background'] = currWordState[idx]['color']
         entryList[currRow][idx]['disabledbackground'] = currWordState[idx]['color']
         entryList[currRow][idx]['state'] = DISABLED
+
+        buttonList[currWordState[idx]['char']
+                   ]['background'] = currWordState[idx]['color']
+        buttonList[currWordState[idx]['char']]['foreground'] = 'white'
     print('')
 
     answerVariable.set('')
@@ -201,7 +215,7 @@ def gameCycle():
     # random.seed('Can I get A dai mai, Ajarn')  # Just for testing
     global targetWord
     targetWord = random.choice(wordsList)
-    
+
     # Reset Counter
     global currRow
     currRow = 0
@@ -210,6 +224,11 @@ def gameCycle():
             textVar.set('')
 
             entryList[idxRow][idxCol]['disabledbackground'] = 'white'
+
+    for btn in buttonList:
+        # Default Button Color
+        buttonList[btn]['background'] = 'SystemButtonFace'
+        buttonList[btn]['foreground'] = 'black'
 
 
 if __name__ == '__main__':
@@ -220,7 +239,8 @@ if __name__ == '__main__':
     root.columnconfigure(tuple(range(22)), weight=1, minsize=1)
 
     # Draw Title
-    Label(root, text='Wordle', font='Helvetica 24 bold').grid(row=1, column=1, rowspan=2, columnspan=20)
+    Label(root, text='Wordle', font='Helvetica 24 bold').grid(
+        row=1, column=1, rowspan=2, columnspan=20)
 
     # Draw Components
     initKeyboardGUI()
