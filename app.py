@@ -5,6 +5,7 @@ import random
 
 
 # Global Game Variable
+entryList = []          # Store all Entry
 textVariableList = []   # Store all Entry's TextVariable
 wordsList = []          # Wordle's words list
 answerVariable = None   # Answer Entry box's TextVariable
@@ -28,7 +29,8 @@ def drawButton(text='', row=0, rowspan=1, column=0, columnspan=1, width=100, hei
 
 def drawSquareEntry(textvariable, row=0, rowspan=1, column=0, columnspan=1, width=100, height=100):
     frame = Frame(root, width=width, height=height)
-    entry = Entry(frame, textvariable=textvariable, justify='center')
+    entry = Entry(frame, textvariable=textvariable, justify='center',
+                  foreground='white', font='Helvetica 24 bold')
 
     frame.grid_propagate(False)         # Disables resizing of frame
     frame.columnconfigure(0, weight=1)  # Enables button to fill frame
@@ -77,6 +79,7 @@ def initDisplay():
     for inxRow in range(6):
         placeRow = startRow + (2 * inxRow)
         textVariableRow = []
+        entryRow = []
         for inxCol in range(5):
             placeColumn = startColumn + (2 * inxCol)
 
@@ -87,8 +90,10 @@ def initDisplay():
                                     row=placeRow, rowspan=2,
                                     column=placeColumn, columnspan=2
                                     )
-            entry['state'] = DISABLED
+            # entry['state'] = DISABLED
+            entryRow.append(entry)
         textVariableList.append(textVariableRow)
+        entryList.append(entryRow)
 
     # Answer Box
     Label(root, text='Answer: ').grid(row=17, column=6, columnspan=4, pady=15)
@@ -99,6 +104,7 @@ def initDisplay():
     entryAnswer = Entry(root, textvariable=answerVariable)
     entryAnswer.grid(row=17, column=10, columnspan=6, pady=15)
     entryAnswer.bind('<Return>', checkWord)
+    entryAnswer.focus()
 
 
 def checkWord(event=None):
@@ -120,32 +126,74 @@ def checkWord(event=None):
         return
 
     print(currWord, targetWord)
+
+    # Create dict of each letter count of Target Word
+    targetWordCount = {}
+    for c in targetWord:
+        if(c in targetWordCount):
+            targetWordCount[c] += 1
+        else:
+            targetWordCount[c] = 1
+
+    currWordState = {}
+    # Check for exact match
+    for idx, char in enumerate(currWord):
+        if(char == targetWord[idx]):
+            # Remove Exact Match from Target Word's letter count
+            targetWordCount[char] -= 1
+
+            # Exact Match, green color
+            currWordState[idx] = {
+                'char': char,
+                'color': 'green'
+            }
+        else:
+            # Not Exact Match, can be yellow, or gray
+            currWordState[idx] = {
+                'char': char,
+                'color': 'gray'
+            }
+
+    for idx, char in enumerate(currWord):
+        # Is there is any char in Target Word
+        if(char in targetWord):
+            if(targetWordCount[char] != 0):
+                # If not Exact Match but exist in word, yellow color
+                if(currWordState[idx]['color'] != 'green'):
+                    currWordState[idx]['color'] = 'yellow'
+
+                    targetWordCount[char] -= 1
+                # No more words left, gray color
+                elif(targetWordCount[char] < 1):
+                    currWordState[idx]['color'] = 'gray'
+
+    global currRow
+    # Set Color, and Char
+    for idx, char in enumerate(currWordState):
+        if(currWordState[idx]['color'] == 'green'):
+            print('🟩', end='')
+        elif(currWordState[idx]['color'] == 'yellow'):
+            print('🟨', end='')
+        elif(currWordState[idx]['color'] == 'gray'):
+            print('⬛', end='')
+
+        textVariableList[currRow][idx].set(currWordState[idx]['char'].upper())
+        entryList[currRow][idx].config(
+            {'background': currWordState[idx]['color']})
+    print('')
+
+    answerVariable.set('')
+    currRow += 1
+
     # Answer is correct
     if(currWord == targetWord):
         messagebox.showinfo('You won!', 'Congratulations, You won!')
         return
 
 
-    currWordState = {}
-    # Check for exact match
-    for idx, char in enumerate(currWord):
-        if(char == targetWord[idx]):
-            currWordState[idx] = {
-                'char': char,
-                'color': 'green'
-            }
-        else:
-            currWordState[idx] = {
-                'char': char,
-                'color': 'gray'
-            }
-
-    print(currWordState)
-
-
 def gameCycle():
     # Pick random words
-    random.seed('Can I get A dai mai, Ajarn')  # Just for testing
+    # random.seed('Can I get A dai mai, Ajarn')  # Just for testing
     global targetWord
     targetWord = random.choice(wordsList)
 
