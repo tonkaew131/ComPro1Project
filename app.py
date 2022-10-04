@@ -1,18 +1,29 @@
 from tkinter import *
+from tkinter import messagebox
+
+import random
 
 
-def drawButton(text='', row=0, rowspan=1, column=0, columnspan=1, width=100, height=100):
+# Global Game Variable
+textVariableList = []   # Store all Entry's TextVariable
+wordsList = []          # Wordle's words list
+answerVariable = None   # Answer Entry box's TextVariable
+targetWord = ''         # Current Game's target word
+currRow = 0             # Current Game's playing row
+
+
+def drawButton(text='', row=0, rowspan=1, column=0, columnspan=1, width=100, height=100, command=None):
     frame = Frame(root, width=width, height=height)
-    button = Button(frame, text=text)
+    button = Button(frame, text=text, command=command)
 
     frame.grid_propagate(False)         # Disables resizing of frame
     frame.columnconfigure(0, weight=1)  # Enables button to fill frame
-    # Any positive number would do the trick
     frame.rowconfigure(0, weight=1)
 
     frame.grid(row=row, column=column, rowspan=rowspan,
                columnspan=columnspan, padx=5, pady=5)
     button.grid(sticky='wens')
+    return button
 
 
 def drawSquareEntry(textvariable, row=0, rowspan=1, column=0, columnspan=1, width=100, height=100):
@@ -26,6 +37,7 @@ def drawSquareEntry(textvariable, row=0, rowspan=1, column=0, columnspan=1, widt
     frame.grid(row=row, column=column, rowspan=rowspan,
                columnspan=columnspan, padx=5, pady=5)
     entry.grid(sticky='wens')
+    return entry
 
 
 def initKeyboardGUI():
@@ -36,7 +48,7 @@ def initKeyboardGUI():
     ]
 
     offset = [0, 1, 3]
-    startRow, startColumn = 17, 1
+    startRow, startColumn = 19, 1
 
     # Draw Keyboard Key
     for inxRow, row in enumerate(keyboardLayout):
@@ -45,33 +57,97 @@ def initKeyboardGUI():
             placeColumn = startColumn + (2 * inxCol) + offset[inxRow]
 
             drawButton(text, width=40, height=40,
-                row=placeRow, rowspan=2,
-                column=placeColumn, columnspan=2
-            )
+                       row=placeRow, rowspan=2,
+                       column=placeColumn, columnspan=2
+                       )
 
     # Enter Button
-    drawButton('Enter', row=21, rowspan=2, column=1,
-               columnspan=3, width=40 / 2 * 3, height=40)
+    drawButton('Enter', row=23, rowspan=2, column=1,
+               columnspan=3, width=40 / 2 * 3, height=40, command=checkWord)
 
     # Return Button
-    drawButton('<=', row=21, rowspan=2, column=18,
+    drawButton('<=', row=23, rowspan=2, column=18,
                columnspan=3, width=40 / 2 * 3, height=40)
 
 
 def initDisplay():
     startRow, startColumn = 4, 6
 
-    str = StringVar()
-    str.set('X')
+    # Display 6 x 5
     for inxRow in range(6):
         placeRow = startRow + (2 * inxRow)
+        textVariableRow = []
         for inxCol in range(5):
             placeColumn = startColumn + (2 * inxCol)
 
-            drawSquareEntry(str,  width=40, height=40,
-                row=placeRow, rowspan=2,
-                column=placeColumn, columnspan=2
-            )
+            str = StringVar()
+            textVariableRow.append(str)
+
+            entry = drawSquareEntry(str,  width=40, height=40,
+                                    row=placeRow, rowspan=2,
+                                    column=placeColumn, columnspan=2
+                                    )
+            entry['state'] = DISABLED
+        textVariableList.append(textVariableRow)
+
+    # Answer Box
+    Label(root, text='Answer: ').grid(row=17, column=6, columnspan=4, pady=15)
+
+    global answerVariable
+    answerVariable = StringVar()
+
+    entryAnswer = Entry(root, textvariable=answerVariable)
+    entryAnswer.grid(row=17, column=10, columnspan=6, pady=15)
+    entryAnswer.bind('<Return>', checkWord)
+
+
+def checkWord(event=None):
+    currWord = answerVariable.get().strip()
+
+    # Is word empty
+    if(len(currWord) == 0):
+        messagebox.showinfo('Please enter again', 'Word can\'t be emptied!')
+        return
+
+    # Is word wrong size
+    if(len(currWord) != 5):
+        messagebox.showinfo('Please enter again', 'Word size must be 5!')
+        return
+
+    # Is word a word
+    if(currWord not in wordsList):
+        messagebox.showinfo('Please enter again', 'Not in word list!')
+        return
+
+    print(currWord, targetWord)
+    # Answer is correct
+    if(currWord == targetWord):
+        messagebox.showinfo('You won!', 'Congratulations, You won!')
+        return
+
+
+    currWordState = {}
+    # Check for exact match
+    for idx, char in enumerate(currWord):
+        if(char == targetWord[idx]):
+            currWordState[idx] = {
+                'char': char,
+                'color': 'green'
+            }
+        else:
+            currWordState[idx] = {
+                'char': char,
+                'color': 'gray'
+            }
+
+    print(currWordState)
+
+
+def gameCycle():
+    # Pick random words
+    random.seed('Can I get A dai mai, Ajarn')  # Just for testing
+    global targetWord
+    targetWord = random.choice(wordsList)
 
 
 if __name__ == '__main__':
@@ -92,5 +168,8 @@ if __name__ == '__main__':
     f = open('words', 'r')
     wordsList = f.read().split('\n')
     print(f'Loaded {len(wordsList)} words')
+
+    # Main Game Cycle
+    gameCycle()
 
     root.mainloop()
