@@ -17,3 +17,4 @@
 ## Thanks
 
 - [Wordle Words List](https://github.com/tabatkins/wordle-list)
+- [Wordle Game Mechanic](https://github.com/AravindhStanley/wordle-clone-python/blob/main/src/modules/wordle.py)
