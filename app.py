@@ -192,6 +192,7 @@ def checkWord(event=None):
     # Answer is correct
     if(currWord == targetWord):
         messagebox.showinfo('You won!', 'Congratulations, You won!')
+        gameCycle()
         return
 
 
@@ -200,6 +201,15 @@ def gameCycle():
     # random.seed('Can I get A dai mai, Ajarn')  # Just for testing
     global targetWord
     targetWord = random.choice(wordsList)
+    
+    # Reset Counter
+    global currRow
+    currRow = 0
+    for idxRow, row in enumerate(textVariableList):
+        for idxCol, textVar in enumerate(row):
+            textVar.set('')
+
+            entryList[idxRow][idxCol]['disabledbackground'] = 'white'
 
 
 if __name__ == '__main__':
