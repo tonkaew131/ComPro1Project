@@ -245,22 +245,23 @@ def StatsWindow():
         'guess_word3',
         'guess_word4',
         'guess_word5',
-        'guess_word6'
+        ''
     ]
 
     # Open History CSV File
     try:
-        f = open('history.csv', 'r+')
+        f = open('history.csv', 'r+', newline='')
     except:
         print('Error can\'t open history.csv File')
 
-    csvReader = csv.DictReader(f, fieldnames=attribute)
-    csvWriter = csv.DictWriter(f, fieldnames=attribute)
-
-    if f.tell() == 0:
-        csvWriter.writeheader()
-
+    csvReader = csv.reader(f)
     historyData = [row for row in csvReader]
+
+    csvWriter = csv.writer(f)
+
+    if len(historyData) == 0:
+        csvWriter.writerow(attribute)
+
     print(historyData, len(historyData))
 
     f.close()
