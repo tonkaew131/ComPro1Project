@@ -4,15 +4,23 @@
 
 ## Check List
 
-- Calculation
+- Calculation (Kinda ✅, idk)
 - ✅ If Condition
 - ✅ Iteration / Loop
 - ✅ Containers (List / Tuple / Dictionary)
 - ✅ Functions, parameter & return values
 - ✅  GUI Tkinter (use .grid() for layout)
-- Exception (try .. except ..) e.g, Read data file..
-- Data file
+- ✅ Exception (try .. except ..) e.g, Read data file..
+- ✅ Data file
 - Write and Read data file (and process)
+
+## CSV Layouts
+
+- History: Store previous game data
+  - date
+  - target_word
+  - guess_count
+  - guess_word1 - guess_word6
 
 ## Thanks
 

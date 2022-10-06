@@ -1,3 +1,4 @@
+import csv
 from tkinter import *
 from tkinter import messagebox
 
@@ -231,6 +232,41 @@ def gameCycle():
         buttonList[btn]['foreground'] = 'black'
 
 
+def StatsWindow():
+    root2 = Tk()
+    root2.title('Stats & History | Wordle')
+
+    attribute = [
+        'date',
+        'target_word',
+        'guess_count',
+        'guess_word1',
+        'guess_word2',
+        'guess_word3',
+        'guess_word4',
+        'guess_word5',
+        'guess_word6'
+    ]
+
+    # Open History CSV File
+    try:
+        f = open('history.csv', 'r+')
+    except:
+        print('Error can\'t open history.csv File')
+
+    csvReader = csv.DictReader(f, fieldnames=attribute)
+    csvWriter = csv.DictWriter(f, fieldnames=attribute)
+
+    if f.tell() == 0:
+        csvWriter.writeheader()
+
+    historyData = [row for row in csvReader]
+    print(historyData, len(historyData))
+
+    f.close()
+    root2.mainloop()
+
+
 if __name__ == '__main__':
     root = Tk()
     root.title('Wordle')
@@ -240,15 +276,25 @@ if __name__ == '__main__':
 
     # Draw Title
     Label(root, text='Wordle', font='Helvetica 24 bold').grid(
-        row=1, column=1, rowspan=2, columnspan=20)
+        row=1, column=8, rowspan=2, columnspan=6)
+
+    # Stats Button
+    Button(root, text='Stats', width=7, command=StatsWindow).grid(
+        row=1, column=17, columnspan=4)
 
     # Draw Components
     initKeyboardGUI()
     initDisplay()
 
     # Load Words List
-    f = open('words', 'r')
-    wordsList = f.read().split('\n')
+    try:
+        f = open('words', 'r')
+        wordsList = f.read().split('\n')
+        f.close()
+    except:
+        print('Can\'t Find Words list File, exiting...')
+        exit()
+
     print(f'Loaded {len(wordsList)} words')
 
     # Main Game Cycle
