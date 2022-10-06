@@ -121,7 +121,7 @@ def onKeyboardClick(key):
 
 
 def checkWord(event=None):
-    currWord = answerVariable.get().strip()
+    currWord = answerVariable.get().strip().lower()
 
     # Is word empty
     if(len(currWord) == 0):
