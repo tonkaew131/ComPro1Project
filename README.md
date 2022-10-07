@@ -12,14 +12,14 @@
 - ✅  GUI Tkinter (use .grid() for layout)
 - ✅ Exception (try .. except ..) e.g, Read data file..
 - ✅ Data file
-- Write and Read data file (and process)
+- ✅ Write and Read data file (and process)
 
 ## CSV Layouts
 
 - History: Store previous game data
-  - date
+  - date: Epoch time (in seconds)
   - target_word
-  - guess_count
+  - guess_count: -1 if not winning!
   - guess_word1 - guess_word6
 
 ## Thanks

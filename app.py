@@ -1,8 +1,9 @@
-import csv
 from tkinter import *
 from tkinter import messagebox
 
 import random
+import time
+import csv
 
 # Global Game Variable
 entryList = []          # Store all Entry
@@ -10,8 +11,70 @@ buttonList = {}         # Store all Keyboard's Button
 textVariableList = []   # Store all Entry's TextVariable
 wordsList = []          # Wordle's words list
 answerVariable = None   # Answer Entry box's TextVariable
+guessList = []          # Current Game's guess words
 targetWord = ''         # Current Game's target word
 currRow = 0             # Current Game's playing row
+
+
+# Constants
+HISTORY_HEADER = [
+    'date',
+    'target_word',
+    'guess_count',
+    'guess_word1',
+    'guess_word2',
+    'guess_word3',
+    'guess_word4',
+    'guess_word5',
+    'guess_word6'
+]
+
+
+def getHistory():
+    try:
+        f = open('history.csv', 'r+', newline='')
+    except:
+        try: 
+            # File does not existed
+            f = open('history.csv', 'w+', newline='')
+        except:
+            print('Error can\'t create history.csv File, getHistory()')
+            return []
+
+    csvReader = csv.reader(f)
+    historyData = [row for row in csvReader]
+
+    # File existed, but it's empty
+    if len(historyData) == 0:
+        csvWriter = csv.writer(f)
+        csvWriter.writerow(HISTORY_HEADER)
+    else:
+        # Removed first row (header row)
+        historyData = historyData[1:]
+
+    f.close()
+    return historyData
+
+
+def updateHistory(data):
+    if(len(data) != len(HISTORY_HEADER)):
+        print('Invalid History data!, (updateHistory(data))')
+        return False
+
+    # Call for header checking ...
+    getHistory()
+
+    try:
+        f = open('history.csv', 'a', newline='')
+    except:
+        print('Error can\'t open history.csv File')
+        return False
+
+    csvWriter = csv.writer(f)
+    csvWriter.writerow(data)
+    f.close()
+
+    return True
 
 
 def drawButton(text='', row=0, rowspan=1, column=0, columnspan=1, width=100, height=100, command=None, keyboard=False):
@@ -123,6 +186,7 @@ def onKeyboardClick(key):
 
 def checkWord(event=None):
     currWord = answerVariable.get().strip().lower()
+    guessList.append(currWord)
 
     # Is word empty
     if(len(currWord) == 0):
@@ -207,6 +271,40 @@ def checkWord(event=None):
     # Answer is correct
     if(currWord == targetWord):
         messagebox.showinfo('You won!', 'Congratulations, You won!')
+        history = [
+            time.time(),  # date
+            targetWord,  # target_word
+            currRow,     # guess_count
+        ]
+
+        # guess_word1 - guess_word6
+        for i in range(6):
+            if(i >= len(guessList)):
+                history.append('')
+            else:
+                history.append(guessList[i])
+        print(history)
+
+        updateHistory(history)
+        gameCycle()
+        return
+
+    # You lose ):
+    if(currRow == 6):
+        messagebox.showinfo('You lose!', 'You lose! ):')
+        history = [
+            time.time(),  # date
+            targetWord,   # target_word
+            -1,           # guess_count,
+            guessList[0], # guess_word1
+            guessList[1], # guess_word2
+            guessList[2], # guess_word3
+            guessList[3], # guess_word4
+            guessList[4], # guess_word5
+            guessList[5], # guess_word6
+        ]
+
+        updateHistory(history)
         gameCycle()
         return
 
@@ -216,6 +314,9 @@ def gameCycle():
     # random.seed('Can I get A dai mai, Ajarn')  # Just for testing
     global targetWord
     targetWord = random.choice(wordsList)
+
+    global guessList
+    guessList = []
 
     # Reset Counter
     global currRow
@@ -236,32 +337,7 @@ def StatsWindow():
     root2 = Tk()
     root2.title('Stats & History | Wordle')
 
-    attribute = [
-        'date',
-        'target_word',
-        'guess_count',
-        'guess_word1',
-        'guess_word2',
-        'guess_word3',
-        'guess_word4',
-        'guess_word5',
-        ''
-    ]
-
-    # Open History CSV File
-    try:
-        f = open('history.csv', 'r+', newline='')
-    except:
-        print('Error can\'t open history.csv File')
-
-    csvReader = csv.reader(f)
-    historyData = [row for row in csvReader]
-
-    csvWriter = csv.writer(f)
-
-    if len(historyData) == 0:
-        csvWriter.writerow(attribute)
-
+    historyData = getHistory()
     print(historyData, len(historyData))
 
     f.close()
