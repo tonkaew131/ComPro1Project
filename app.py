@@ -34,7 +34,7 @@ def getHistory():
     try:
         f = open('history.csv', 'r+', newline='')
     except:
-        try: 
+        try:
             # File does not existed
             f = open('history.csv', 'w+', newline='')
         except:
@@ -186,7 +186,6 @@ def onKeyboardClick(key):
 
 def checkWord(event=None):
     currWord = answerVariable.get().strip().lower()
-    guessList.append(currWord)
 
     # Is word empty
     if(len(currWord) == 0):
@@ -204,6 +203,7 @@ def checkWord(event=None):
         return
 
     print(currWord, targetWord)
+    guessList.append(currWord)
 
     # Create dict of each letter count of Target Word
     targetWordCount = {}
@@ -273,8 +273,8 @@ def checkWord(event=None):
         messagebox.showinfo('You won!', 'Congratulations, You won!')
         history = [
             time.time(),  # date
-            targetWord,  # target_word
-            currRow,     # guess_count
+            targetWord,   # target_word
+            currRow,      # guess_count
         ]
 
         # guess_word1 - guess_word6
@@ -293,15 +293,15 @@ def checkWord(event=None):
     if(currRow == 6):
         messagebox.showinfo('You lose!', 'You lose! ):')
         history = [
-            time.time(),  # date
-            targetWord,   # target_word
-            -1,           # guess_count,
-            guessList[0], # guess_word1
-            guessList[1], # guess_word2
-            guessList[2], # guess_word3
-            guessList[3], # guess_word4
-            guessList[4], # guess_word5
-            guessList[5], # guess_word6
+            time.time(),   # date
+            targetWord,    # target_word
+            -1,            # guess_count,
+            guessList[0],  # guess_word1
+            guessList[1],  # guess_word2
+            guessList[2],  # guess_word3
+            guessList[3],  # guess_word4
+            guessList[4],  # guess_word5
+            guessList[5],  # guess_word6
         ]
 
         updateHistory(history)
@@ -338,7 +338,8 @@ def StatsWindow():
     root2.title('Stats & History | Wordle')
 
     historyData = getHistory()
-    print(historyData, len(historyData))
+    print(len(historyData))
+    [print(row) for row in historyData]
 
     f.close()
     root2.mainloop()
