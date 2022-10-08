@@ -1,3 +1,4 @@
+from math import floor
 from tkinter import *
 from tkinter import messagebox
 
@@ -338,8 +339,68 @@ def StatsWindow():
     root2.title('Stats & History | Wordle')
 
     historyData = getHistory()
-    print(len(historyData))
-    [print(row) for row in historyData]
+    # print(len(historyData))              # For testing
+    # [print(row) for row in historyData]  # For testing
+
+    # One loop calculate all
+    winCount = 0
+    winGuessCount = {
+        '1': 0,
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0,
+        '6': 0
+    }
+    highestStreak = 0
+    currStreak = 0
+    for game in historyData:
+        guessCount = int(game[2])
+
+        # Winning
+        if(guessCount != -1):
+            winGuessCount[str(guessCount)] += 1
+            winCount += 1
+
+            currStreak += 1
+        else:  # Losing
+            if(currStreak > highestStreak):
+                highestStreak = currStreak
+
+            currStreak = 0
+
+    # Draw 'STATISTICS' Label
+    Label(root2, text='STATISTICS').grid(row=0, column=0, columnspan=4, pady=5)
+
+    # Draw Play count
+    playCount = len(historyData)
+    Label(root2, text=playCount).grid(row=1, column=0)
+    Label(root2, text='Played').grid(row=2, column=0)
+
+    # Draw Win rate
+    winRate = winCount / playCount
+    Label(root2, text=str(round(winRate * 100))).grid(row=1, column=1)
+    Label(root2, text='Win %').grid(row=2, column=1)
+
+    # Draw Current Streak
+    Label(root2, text=str(currStreak)).grid(row=1, column=2)
+    Label(root2, text='Current Streak').grid(row=2, column=2)
+
+    # Draw Max Streak
+    Label(root2, text=str(highestStreak)).grid(row=1, column=3)
+    Label(root2, text='Max Streak').grid(row=2, column=3)
+
+    # Draw 'GUESS DISTRIBUTION' Label
+    Label(root2, text='GUESS DISTRIBUTION').grid(row=3, column=0, columnspan=4, pady=5)
+    maxLength = max([winGuessCount[key] for key in winGuessCount])
+    charType, charMaxSize = '|', 50
+    for i in winGuessCount:
+        graphBar = charType * floor(charMaxSize * winGuessCount[i] / maxLength)
+        idx = int(i) - 1
+
+        Label(root2, text=i).grid(row=4+idx, column=0)
+        Label(root2, text=f'{graphBar} {winGuessCount[i]}').grid(
+            row=4+idx, column=1, columnspan=3, sticky='W')
 
     f.close()
     root2.mainloop()
