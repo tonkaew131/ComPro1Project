@@ -139,7 +139,7 @@ def initKeyboardGUI():
 
     # Return Button
     drawButton('<=', row=23, rowspan=2, column=18,
-               columnspan=3, width=40 / 2 * 3, height=40)
+               columnspan=3, width=40 / 2 * 3, height=40, command=onReturn)
 
 
 def initDisplay():
@@ -183,11 +183,19 @@ def initDisplay():
     answerEntry = entryAnswer
 
 
+def onReturn():
+    currWord = answerVariable.get()
+    currWord = currWord[:-1]  # Remove last element
+
+    answerVariable.set(currWord)
+    answerEntry.icursor(len(currWord))
+
+
 def onKeyboardClick(key):
     currWord = answerVariable.get()
     currWord += key.lower()
-    answerVariable.set(currWord)
 
+    answerVariable.set(currWord)
     answerEntry.icursor(len(currWord))
 
 
@@ -397,7 +405,8 @@ def StatsWindow():
     Label(root2, text='Max Streak').grid(row=2, column=3)
 
     # Draw 'GUESS DISTRIBUTION' Label
-    Label(root2, text='GUESS DISTRIBUTION').grid(row=3, column=0, columnspan=4, pady=5)
+    Label(root2, text='GUESS DISTRIBUTION').grid(
+        row=3, column=0, columnspan=4, pady=5)
     maxLength = max([winGuessCount[key] for key in winGuessCount])
     charType, charMaxSize = '|', 50
     for i in winGuessCount:
