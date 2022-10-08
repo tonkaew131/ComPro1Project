@@ -11,6 +11,7 @@ entryList = []          # Store all Entry
 buttonList = {}         # Store all Keyboard's Button
 textVariableList = []   # Store all Entry's TextVariable
 wordsList = []          # Wordle's words list
+answerEntry = None      # Answer Entry box
 answerVariable = None   # Answer Entry box's TextVariable
 guessList = []          # Current Game's guess words
 targetWord = ''         # Current Game's target word
@@ -178,11 +179,16 @@ def initDisplay():
     entryAnswer.bind('<Return>', checkWord)
     entryAnswer.focus()
 
+    global answerEntry
+    answerEntry = entryAnswer
+
 
 def onKeyboardClick(key):
     currWord = answerVariable.get()
     currWord += key.lower()
     answerVariable.set(currWord)
+
+    answerEntry.icursor(len(currWord))
 
 
 def checkWord(event=None):
