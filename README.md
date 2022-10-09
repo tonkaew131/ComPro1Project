@@ -4,7 +4,7 @@
 
 ## Check List
 
-- Calculation (Kinda ✅, idk)
+- ✅ Calculation
 - ✅ If Condition
 - ✅ Iteration / Loop
 - ✅ Containers (List / Tuple / Dictionary)
@@ -21,6 +21,19 @@
   - target_word
   - guess_count: -1 if not winning!
   - guess_word1 - guess_word6
+
+## Submissions
+
+1. Project Progess 1
+
+```md
+Next week Project Progress (เปลี่ยนจาก อ. ดูแต่ละกลุ่ม มาเป็นส่งเข้า schoology ดังนี้ครับ)
+- Flowchart
+- Containers  (โครงสร้างและ ตย. ข้อมูล)
+- GUI (Graphics & Coding)    เสร็จไม่น้อยกว่า 80%
+- Program (Python Coding)   เสร็จไม่น้อยกว่า 80%
+พิมพ์ใส่ MS Word ส่งเข้า Schoology ก่อนวันที่มีคลาสเรียน (นศ ที่อยู่ลำดับแรก เป็นผู้ส่งคนเดียว)
+```
 
 ## Thanks
 
