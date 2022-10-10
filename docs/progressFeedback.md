@@ -4,3 +4,4 @@
 - Describe GUI
 - In each function() used function name instead of 'Start'
 - Flowchart before Coding
+- In each function(), it should have short comment abt how it works (TH/ENG)
