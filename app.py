@@ -1,6 +1,7 @@
 from math import floor
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 
 import random
 import time
@@ -263,20 +264,30 @@ def checkWord(event=None):
     global currRow
     # Set Color, and Char
     for idx in currWordState:
-        if(currWordState[idx]['color'] == 'green'):
+        color = currWordState[idx]['color']
+        if(color == 'green'):
             print('🟩', end='')
-        elif(currWordState[idx]['color'] == 'yellow'):
+        elif(color  == 'yellow'):
             print('🟨', end='')
-        elif(currWordState[idx]['color'] == 'gray'):
+        elif(color  == 'gray'):
             print('⬛', end='')
 
-        textVariableList[currRow][idx].set(currWordState[idx]['char'].upper())
         # entryList[currRow][idx]['background'] = currWordState[idx]['color']
-        entryList[currRow][idx]['disabledbackground'] = currWordState[idx]['color']
+
+        # Special Yellow Color
+        if(color == 'yellow'):
+            entryList[currRow][idx]['disabledbackground'] = '#CCCC00'
+            buttonList[currWordState[idx]['char']]['background'] = '#CCCC00'
+            buttonList[currWordState[idx]['char']]['highlightbackground'] = '#CCCC00'
+        else:
+            entryList[currRow][idx]['disabledbackground'] = color
+            buttonList[currWordState[idx]['char']]['background'] = color
+            buttonList[currWordState[idx]['char']]['highlightbackground'] = color
+
+        buttonList[currWordState[idx]['char']]['highlightthickness'] = 30
+        textVariableList[currRow][idx].set(currWordState[idx]['char'].upper())
         entryList[currRow][idx]['state'] = DISABLED
 
-        buttonList[currWordState[idx]['char']
-                   ]['background'] = currWordState[idx]['color']
         buttonList[currWordState[idx]['char']]['foreground'] = 'white'
     print('')
 
@@ -346,6 +357,9 @@ def gameCycle():
         # Default Button Color
         buttonList[btn]['background'] = 'SystemButtonFace'
         buttonList[btn]['foreground'] = 'black'
+
+        buttonList[btn]['highlightbackground'] = 'SystemButtonFace'
+        buttonList[btn]['highlightthickness'] = 0
 
 
 def StatsWindow():
@@ -424,6 +438,8 @@ def StatsWindow():
 if __name__ == '__main__':
     root = Tk()
     root.title('Wordle')
+
+    root.resizable(False, False)
 
     root.rowconfigure(tuple(range(22)), weight=1, minsize=1)
     root.columnconfigure(tuple(range(22)), weight=1, minsize=1)
