@@ -147,12 +147,12 @@ def initDisplay():
     startRow, startColumn = 4, 6
 
     # Display 6 x 5
-    for inxRow in range(6):
-        placeRow = startRow + (2 * inxRow)
-        textVariableRow = []
+    for inxRow in range(6):                #* y axis
+        placeRow = startRow + (2 * inxRow) #* 4 6 8 10 12 14
+        textVariableRow = []              
         entryRow = []
-        for inxCol in range(5):
-            placeColumn = startColumn + (2 * inxCol)
+        for inxCol in range(5):            #* x axis 
+            placeColumn = startColumn + (2 * inxCol) #* 6 8 10 12 
 
             str = StringVar()
             textVariableRow.append(str)
@@ -166,6 +166,7 @@ def initDisplay():
             entry['disabledforeground'] = 'white'
             entryRow.append(entry)
         textVariableList.append(textVariableRow)
+       
         entryList.append(entryRow)
 
     # Answer Box
@@ -214,8 +215,8 @@ def checkWord(event=None):
         return
 
     # Is word a word
-    if(currWord not in wordsList):
-        messagebox.showinfo('Please enter again', 'Not in word list!')
+    if(currWord not in wordsList):                 
+        messagebox.showinfo('Please enter again', 'word is meaningless!')
         return
 
     print(currWord, targetWord)
