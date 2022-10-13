@@ -366,6 +366,9 @@ def StatsWindow():
     root2 = Tk()
     root2.title('Stats & History | Wordle')
 
+    # Make root2 (Stats Windows) not resizable
+    root2.resizable(False, False)
+
     historyData = getHistory()
     # print(len(historyData))              # For testing
     # [print(row) for row in historyData]  # For testing
@@ -439,6 +442,7 @@ if __name__ == '__main__':
     root = Tk()
     root.title('Wordle')
 
+    # Make root not resizable
     root.resizable(False, False)
 
     root.rowconfigure(tuple(range(22)), weight=1, minsize=1)
