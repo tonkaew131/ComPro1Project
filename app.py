@@ -215,7 +215,7 @@ def checkWord(event=None):
 
     # Is word a word
     if(currWord not in wordsList):                 
-        messagebox.showinfo('Please enter again', 'word is meaningless!')
+        messagebox.showinfo('Please enter again', 'Word is meaningless!')
         return
 
     print(currWord, targetWord)
