@@ -215,8 +215,8 @@ def checkWord(event=None):
         return
 
     # Is word a word
-    if(currWord not in wordsList):                 
-        messagebox.showinfo('Please enter again', 'word is meaningless!')
+    if(currWord not in wordsList):                  # word is meaningless
+        messagebox.showinfo('Please enter again', 'word is meaning less!')
         return
 
     print(currWord, targetWord)
@@ -248,19 +248,19 @@ def checkWord(event=None):
                 'char': char,
                 'color': 'gray'
             }
-
+            
     for idx, char in enumerate(currWord):
         # Is there is any char in Target Word
         if(char in targetWord):
-            if(targetWordCount[char] != 0):
-                # If not Exact Match but exist in word, yellow color
-                if(currWordState[idx]['color'] != 'green'):
-                    currWordState[idx]['color'] = 'yellow'
+                if(targetWordCount[char] != 0):
+                    # If not Exact Match but exist in word, yellow color
+                    if(currWordState[idx]['color'] != 'green'):
+                        currWordState[idx]['color'] = 'yellow'
 
-                    targetWordCount[char] -= 1
-                # No more words left, gray color
-                elif(targetWordCount[char] < 1):
-                    currWordState[idx]['color'] = 'gray'
+                        targetWordCount[char] -= 1
+                    # No more words left, gray color
+                    elif(targetWordCount[char] < 1):
+                        currWordState[idx]['color'] = 'gray'    
 
     global currRow
     # Set Color, and Char
@@ -341,6 +341,7 @@ def gameCycle():
     # random.seed('Can I get A dai mai, Ajarn')  # Just for testing
     global targetWord
     targetWord = random.choice(wordsList)
+    
 
     global guessList
     guessList = []
