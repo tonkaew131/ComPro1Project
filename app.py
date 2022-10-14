@@ -252,15 +252,14 @@ def checkWord(event=None):
     for idx, char in enumerate(currWord):
         # Is there is any char in Target Word
         if(char in targetWord):
-                if(targetWordCount[char] != 0):
-                    # If not Exact Match but exist in word, yellow color
-                    if(currWordState[idx]['color'] != 'green'):
-                        currWordState[idx]['color'] = 'yellow'
-
-                        targetWordCount[char] -= 1
-                    # No more words left, gray color
-                    elif(targetWordCount[char] < 1):
-                        currWordState[idx]['color'] = 'gray'    
+            if(targetWordCount[char] != 0):
+                # If not Exact Match but exist in word, yellow color
+                if(currWordState[idx]['color'] != 'green'):
+                    currWordState[idx]['color'] = 'yellow'
+                    targetWordCount[char] -= 1
+                # No more words left, gray color
+                elif(targetWordCount[char] < 1):
+                    currWordState[idx]['color'] = 'gray'    
 
     global currRow
     # Set Color, and Char
