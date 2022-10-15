@@ -1,7 +1,6 @@
 from math import floor
 from tkinter import *
 from tkinter import messagebox
-from tkinter import ttk
 
 import random
 import time
@@ -215,8 +214,8 @@ def checkWord(event=None):
         return
 
     # Is word a word
-    if(currWord not in wordsList):                  # word is meaningless
-        messagebox.showinfo('Please enter again', 'word is meaning less!')
+    if(currWord not in wordsList):                 
+        messagebox.showinfo('Please enter again', 'Word is meaningless!')
         return
 
     print(currWord, targetWord)
@@ -248,7 +247,7 @@ def checkWord(event=None):
                 'char': char,
                 'color': 'gray'
             }
-            
+
     for idx, char in enumerate(currWord):
         # Is there is any char in Target Word
         if(char in targetWord):
@@ -256,10 +255,11 @@ def checkWord(event=None):
                 # If not Exact Match but exist in word, yellow color
                 if(currWordState[idx]['color'] != 'green'):
                     currWordState[idx]['color'] = 'yellow'
+
                     targetWordCount[char] -= 1
                 # No more words left, gray color
                 elif(targetWordCount[char] < 1):
-                    currWordState[idx]['color'] = 'gray'    
+                    currWordState[idx]['color'] = 'gray'
 
     global currRow
     # Set Color, and Char
@@ -317,7 +317,7 @@ def checkWord(event=None):
 
     # You lose ):
     if(currRow == 6):
-        messagebox.showinfo('You lose!', 'You lose! ):')
+        messagebox.showinfo('You lose!', 'You lose! ): answer is"' + targetWord + '"')
         history = [
             time.time(),   # date
             targetWord,    # target_word
@@ -340,7 +340,6 @@ def gameCycle():
     # random.seed('Can I get A dai mai, Ajarn')  # Just for testing
     global targetWord
     targetWord = random.choice(wordsList)
-    
 
     global guessList
     guessList = []
@@ -366,6 +365,9 @@ def gameCycle():
 def StatsWindow():
     root2 = Tk()
     root2.title('Stats & History | Wordle')
+
+    # Make root2 (Stats Windows) not resizable
+    root2.resizable(False, False)
 
     historyData = getHistory()
     # print(len(historyData))              # For testing
@@ -440,6 +442,7 @@ if __name__ == '__main__':
     root = Tk()
     root.title('Wordle')
 
+    # Make root not resizable
     root.resizable(False, False)
 
     root.rowconfigure(tuple(range(22)), weight=1, minsize=1)
