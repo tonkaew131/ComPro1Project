@@ -294,6 +294,10 @@ def checkWord(event=None):
     answerVariable.set('')
     currRow += 1
 
+    # For Mac OS, manually update the windows 
+    root.update_idletasks()
+    root.update()
+
     # Answer is correct
     if(currWord == targetWord):
         messagebox.showinfo('You won!', 'Congratulations, You won!')
