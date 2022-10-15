@@ -272,19 +272,17 @@ def checkWord(event=None):
         elif(color  == 'gray'):
             print('⬛', end='')
 
-        # entryList[currRow][idx]['background'] = currWordState[idx]['color']
-
         # Special Yellow Color
         if(color == 'yellow'):
-            entryList[currRow][idx]['disabledbackground'] = '#CCCC00'
-            buttonList[currWordState[idx]['char']]['background'] = '#CCCC00'
-            buttonList[currWordState[idx]['char']]['highlightbackground'] = '#CCCC00'
-        else:
-            entryList[currRow][idx]['disabledbackground'] = color
-            buttonList[currWordState[idx]['char']]['background'] = color
-            buttonList[currWordState[idx]['char']]['highlightbackground'] = color
+            color = '#CCCC00'
 
+        entryList[currRow][idx]['disabledbackground'] = color
+        buttonList[currWordState[idx]['char']]['background'] = color
+
+        # For Mac OS
+        buttonList[currWordState[idx]['char']]['highlightbackground'] = color
         buttonList[currWordState[idx]['char']]['highlightthickness'] = 30
+
         textVariableList[currRow][idx].set(currWordState[idx]['char'].upper())
         entryList[currRow][idx]['state'] = DISABLED
 
@@ -362,6 +360,7 @@ def gameCycle():
         buttonList[btn]['background'] = 'SystemButtonFace'
         buttonList[btn]['foreground'] = 'black'
 
+        # For Mac OS
         buttonList[btn]['highlightbackground'] = 'SystemButtonFace'
         buttonList[btn]['highlightthickness'] = 0
 
