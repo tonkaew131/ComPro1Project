@@ -318,7 +318,7 @@ def checkWord(event=None):
 
     # You lose ):
     if(currRow == 6):
-        messagebox.showinfo('You lose!', 'You lose! ): answer is"' + targetWord + '"')
+        messagebox.showinfo('You lose!', 'You lose! ):\nAnswer was "' + targetWord.title() + '"')
         history = [
             time.time(),   # date
             targetWord,    # target_word
@@ -400,7 +400,7 @@ def StatsWindow():
             currStreak = 0
 
     # Draw 'STATISTICS' Label
-    Label(root2, text='STATISTICS').grid(row=0, column=0, columnspan=4, pady=5)
+    Label(root2, text='STATISTICS', font='Helvetica 10 bold').grid(row=0, column=0, columnspan=4, pady=5)
 
     # Draw Play count
     playCount = len(historyData)
@@ -421,7 +421,7 @@ def StatsWindow():
     Label(root2, text='Max Streak').grid(row=2, column=3)
 
     # Draw 'GUESS DISTRIBUTION' Label
-    Label(root2, text='GUESS DISTRIBUTION').grid(
+    Label(root2, text='GUESS DISTRIBUTION', font='Helvetica 10 bold').grid(
         row=3, column=0, columnspan=4, pady=5)
     maxLength = max([winGuessCount[key] for key in winGuessCount])
     charType, charMaxSize = '|', 50
@@ -429,7 +429,9 @@ def StatsWindow():
         graphBar = charType * floor(charMaxSize * winGuessCount[i] / maxLength)
         idx = int(i) - 1
 
+        # Guess Count
         Label(root2, text=i).grid(row=4+idx, column=0)
+        # Bar Graph
         Label(root2, text=f'{graphBar} {winGuessCount[i]}').grid(
             row=4+idx, column=1, columnspan=3, sticky='W')
 
