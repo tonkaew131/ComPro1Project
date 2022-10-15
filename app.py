@@ -432,7 +432,7 @@ def StatsWindow():
         # Guess Count
         Label(root2, text=i).grid(row=4+idx, column=0)
         # Bar Graph
-        Label(root2, text=f'{graphBar} {winGuessCount[i]}').grid(
+        Label(root2, text=f'{graphBar} {winGuessCount[i]}', fg='green').grid(
             row=4+idx, column=1, columnspan=3, sticky='W')
 
     f.close()
@@ -446,7 +446,7 @@ if __name__ == '__main__':
     # Make root not resizable
     root.resizable(False, False)
 
-    root.rowconfigure(tuple(range(22)), weight=1, minsize=1)
+    root.rowconfigure(tuple(range(26)), weight=1, minsize=1)
     root.columnconfigure(tuple(range(22)), weight=1, minsize=1)
 
     # Draw Title
