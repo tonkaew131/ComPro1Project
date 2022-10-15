@@ -317,7 +317,7 @@ def checkWord(event=None):
 
     # You lose ):
     if(currRow == 6):
-        messagebox.showinfo('You lose!', 'You lose! ):')
+        messagebox.showinfo('You lose!', 'You lose! ): answer is"' + targetWord + '"')
         history = [
             time.time(),   # date
             targetWord,    # target_word
