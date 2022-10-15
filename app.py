@@ -311,7 +311,6 @@ def checkWord(event=None):
                 history.append('')
             else:
                 history.append(guessList[i])
-        print(history)
 
         updateHistory(history)
         gameCycle()
@@ -323,7 +322,7 @@ def checkWord(event=None):
         history = [
             time.time(),   # date
             targetWord,    # target_word
-            -1,            # guess_count,
+            -1,            # guess_count
             guessList[0],  # guess_word1
             guessList[1],  # guess_word2
             guessList[2],  # guess_word3
@@ -339,7 +338,6 @@ def checkWord(event=None):
 
 def gameCycle():
     # Pick random words
-    # random.seed('Can I get A dai mai, Ajarn')  # Just for testing
     global targetWord
     targetWord = random.choice(wordsList)
 
@@ -373,8 +371,6 @@ def StatsWindow():
     root2.resizable(False, False)
 
     historyData = getHistory()
-    # print(len(historyData))              # For testing
-    # [print(row) for row in historyData]  # For testing
 
     # One loop calculate all
     winCount = 0
