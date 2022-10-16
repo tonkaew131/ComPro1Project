@@ -399,30 +399,34 @@ def StatsWindow():
 
             currStreak = 0
 
-    # Draw 'STATISTICS' Label
-    Label(root2, text='STATISTICS', font='Helvetica 10 bold').grid(row=0, column=0, columnspan=4, pady=5)
+ #Draw 'STATISTICS' Label
+    Label(root2, text='STATISTICS').grid(row=0, column=0, columnspan=5, pady=5)
 
     # Draw Play count
     playCount = len(historyData)
     Label(root2, text=playCount).grid(row=1, column=0)
-    Label(root2, text='Played').grid(row=2, column=0)
+    Label(root2, text='"Played"').grid(row=2, column=0)
 
     # Draw Win rate
     winRate = winCount / playCount
     Label(root2, text=str(round(winRate * 100))).grid(row=1, column=1)
-    Label(root2, text='Win %').grid(row=2, column=1)
+    Label(root2, text='"Win %"').grid(row=2, column=1)
+
+    # Draw Total Win
+    Label(root2, text=str(winCount)).grid(row=1, column=2)
+    Label(root2, text='"Total Win"').grid(row=2, column=2)
 
     # Draw Current Streak
-    Label(root2, text=str(currStreak)).grid(row=1, column=2)
-    Label(root2, text='Current Streak').grid(row=2, column=2)
+    Label(root2, text=str(currStreak)).grid(row=1, column=3)
+    Label(root2, text='"Current Streak"').grid(row=2, column=3)
 
     # Draw Max Streak
-    Label(root2, text=str(highestStreak)).grid(row=1, column=3)
-    Label(root2, text='Max Streak').grid(row=2, column=3)
+    Label(root2, text=str(highestStreak)).grid(row=1, column=4)
+    Label(root2, text='"Max Streak"').grid(row=2, column=4)
 
     # Draw 'GUESS DISTRIBUTION' Label
-    Label(root2, text='GUESS DISTRIBUTION', font='Helvetica 10 bold').grid(
-        row=3, column=0, columnspan=4, pady=5)
+    Label(root2, text='GUESS DISTRIBUTION').grid(
+        row=3, column=0, columnspan=5, pady=5)
     maxLength = max([winGuessCount[key] for key in winGuessCount])
     charType, charMaxSize = '|', 50
     for i in winGuessCount:
