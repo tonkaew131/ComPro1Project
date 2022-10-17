@@ -465,6 +465,8 @@ if __name__ == '__main__':
     initKeyboardGUI()
     initDisplay()
 
+    random.seed('1')
+
     # Load Words List
     try:
         f = open('words', 'r')
